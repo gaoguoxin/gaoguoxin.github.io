@@ -5,11 +5,26 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>My Octopress Blog</title>
-  <meta name="author" content="Your Name">
+  <title>ruby and rails study</title>
+  <meta name="author" content="naitnix">
 
   
-  <meta name="description" content=" Blog Archives Recent Posts ">
+  <meta name="description" content="1、首先我们来看个例子 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+module M def self.included(base) base.extend ClassMethods base.send(:include, InstanceMethods) scope &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,14 +34,15 @@
 
   
   <link rel="canonical" href="http://gaoguoxin.github.io">
-  <link href="/favicon.png" rel="icon">
+  <link href="/images/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <link href="/atom.xml" rel="alternate" title="ruby and rails study" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+  
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
@@ -36,9 +52,9 @@
 
 <body   >
   <header role="banner"><hgroup>
-  <h1><a href="/">My Octopress Blog</a></h1>
+  <h1><a href="/">ruby and rails study</a></h1>
   
-    <h2>A blogging framework for hackers.</h2>
+    <h2>鸟欲高飞先震翅,人欲奋进先读书</h2>
   
 </hgroup>
 
@@ -66,6 +82,366 @@
       <div class="blog-index">
   
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/21/hello-world/">ActiveSupport::Concern Source Code Analyse</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-21T02:44:45+00:00" pubdate data-updated="true">02/21/2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>1、首先我们来看个例子</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">M</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">extend</span> <span class="no">ClassMethods</span>
+</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:include</span><span class="p">,</span> <span class="no">InstanceMethods</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">scope</span> <span class="ss">:disabled</span><span class="p">,</span> <span class="n">where</span><span class="p">(</span><span class="ss">:disabled</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">ClassMethods</span>
+</span><span class='line'>    <span class="c1">#...</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">InstanceMethods</span>
+</span><span class='line'>    <span class="c1">#...</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这是一个再普通不过的module了，当某个模块(或者类)include它以后，它让目标模块(或者类)去txtend  ClassMethods 这个模块，并去include  InstanceMethods 这个模块，这样的话，目标模块(或者类)在include M 的时候，这个目标模块(或者类)就拥有了ClassMethods这个模块中定义的方法并把这些方法当作类方法，并拥有了InstanceMethods模块的方法，并把这个模块中的方法作为自己的实例方法。如果你不觉得麻烦的话，那么这种方式是可选的或者，干脆直接定义实例方法，而不定义InstanceMethods，因为在include一个module的时候，module里面定义的方法自动就为实例方法。</p>
+
+<p>2、再来看看另外一个例子</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Foo</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
+</span><span class='line'>      <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">method_injected_by_foo</span>
+</span><span class='line'>        <span class="c1">#...对宿主做某些操作，例如增強功能等等</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">Bar</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">method_injected_by_foo</span> <span class="c1">#这里调用了Foo这个module定义的method_injected_by_foo方法</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Host</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">Foo</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">Bar</span>
+</span><span class='line'>  <span class="c1">#要想让让Bar被include的时候执行Foo这个module中定义的method_injected_by_foo方法，必须在include  Bar之前先要解决依赖关系，即 include Foo</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面这个例子对于大多数的使用者来说，就会很麻烦，因为我在include某个模块的时候必须解决他们的依赖关系，要知道我include的模块依赖哪些其他模块，这个对使用者来说有点困难。为了解决这个依赖的问题，貌似我们可以这样做，即将依赖关系放到module内去解决,如下:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">module</span> <span class="nn">Foo</span>
+</span><span class='line'>   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+</span><span class='line'>     <span class="n">base</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
+</span><span class='line'>       <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">method_injected_by_foo</span>
+</span><span class='line'>         <span class="c1">#...对宿主做某些操作，例如增強功能等等</span>
+</span><span class='line'>       <span class="k">end</span>
+</span><span class='line'>     <span class="k">end</span>
+</span><span class='line'>   <span class="k">end</span>
+</span><span class='line'> <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'> <span class="k">module</span> <span class="nn">Bar</span>
+</span><span class='line'>   <span class="kp">include</span> <span class="no">Foo</span> <span class="c1">#在这里解决依赖问题</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+</span><span class='line'>     <span class="n">base</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:do_host_something</span><span class="p">)</span>
+</span><span class='line'>   <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'> <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'> <span class="k">class</span> <span class="nc">Host</span>
+</span><span class='line'>   <span class="kp">include</span> <span class="no">Bar</span> <span class="c1"># 这里只需要include一个Bar，而不用关心依赖问题</span>
+</span><span class='line'> <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上代码看似可以执行，但是问题是，在Foo被 Bar include的时候，对于Foo来说，此时的base为Bar，而不是 class Host，所以我们没法在Host include的时候，拿到Host中的do_host_something方法，因为它根本就不在Host中</p>
+
+<p>3、为了解决以上讨论的两个问题，ActiveSupport::Concern出现了，对于上面的问题，你只要这样操作就可以了:</p>
+
+<p>对于第一个问题，你可以这样解决:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;active_support/concern&#39;</span>
+</span><span class='line'><span class="k">module</span> <span class="nn">M</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Concern</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">included</span> <span class="k">do</span>
+</span><span class='line'>    <span class="n">scope</span> <span class="ss">:disabled</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="ss">disabled</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">ClassMethods</span>
+</span><span class='line'>    <span class="c1">#...</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对于第二个问题，你可以这样解决:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;active_support/concern&#39;</span>
+</span><span class='line'><span class="k">module</span> <span class="nn">Foo</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Concern</span>
+</span><span class='line'>  <span class="n">included</span> <span class="k">do</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">method_injected_by_foo</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">module</span> <span class="nn">Bar</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Concern</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">Foo</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">included</span> <span class="k">do</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">method_injected_by_foo</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Host</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">Bar</span> <span class="c1"># 只include Bar就可以了，其他的我们不用关心</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4、接下来，我们看看 active_support/concern 的源码是怎样来实现这些逻辑的</p>
+
+<p>a、首先定义了一个异常类:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">MultipleIncludedBlocks</span> <span class="o">&lt;</span> <span class="no">StandardError</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>    <span class="k">super</span> <span class="s2">&quot;Cannot define multiple &#39;included&#39; blocks for a Concern&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>b、模块被extend的时候，为base添加一个类实例变量，并赋值为空数组，这个类实例变量是用来记录base模块(或者类)的所有依赖模块的</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">extended</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">base</span><span class="o">.</span><span class="n">instance_variable_set</span><span class="p">(</span><span class="ss">:@_dependencies</span><span class="p">,</span> <span class="o">[]</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>c、重写了ruby的 append_features 方法，这个append_features 是ruby Module中的方法，愿意是当一个module(a)被include 到另一个module(b)的时候，就会调用module  a 中的这个append_features方法，并且把module b 做为参数传给append_features方法，然后将module a中的常量，方法，变量添加到module b 中。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">append_features</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="c1">#此时的base代表module b</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">base</span><span class="o">.</span><span class="n">instance_variable_defined?</span><span class="p">(</span><span class="ss">:@_dependencies</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">instance_variable_get</span><span class="p">(</span><span class="ss">:@_dependencies</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>  <span class="c1">#此时的self是module a </span>
+</span><span class='line'>    <span class="k">return</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="n">base</span> <span class="o">&lt;</span> <span class="nb">self</span>
+</span><span class='line'>    <span class="vi">@_dependencies</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">dep</span><span class="o">|</span> <span class="n">base</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:include</span><span class="p">,</span> <span class="n">dep</span><span class="p">)</span> <span class="p">}</span>  <span class="c1"># module b 去 循环include  modulea 的依赖 module</span>
+</span><span class='line'>    <span class="k">super</span>  <span class="c1"># 这个super 调用的是ruby原来的 append_features 方法</span>
+</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">extend</span> <span class="nb">const_get</span><span class="p">(</span><span class="ss">:ClassMethods</span><span class="p">)</span> <span class="k">if</span> <span class="nb">const_defined?</span><span class="p">(</span><span class="ss">:ClassMethods</span><span class="p">)</span> <span class="c1">#module b 去extend  module a 中定一的 ClassMethods 模块</span>
+</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">class_eval</span><span class="p">(</span><span class="o">&amp;</span><span class="vi">@_included_block</span><span class="p">)</span> <span class="k">if</span> <span class="n">instance_variable_defined?</span><span class="p">(</span><span class="ss">:@_included_block</span><span class="p">)</span>  <span class="c1"># 为module b 动态添加一些内容(block中的内容)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>来看一下这个方法的具体逻辑，首先判断 module b 中是否已经有了类实例变量@<em>dependencies，如果有的话，那么将被include的module a 追加到这个变量中，如果一个module 中设置了 @</em>dependencies 这个变量 那么说明 该module 肯定extend 了active_support/concern，如果一个module中没有设置这个变量，可以肯定，该module 没有 extend  active_support/concern ，则该module是最后应用的那个module 。</p>
+
+<p>d、重新定义included 方法，included方法是ruby module中的方法，当一个module a 被另一个module b include的时候，module a 的included 方法就会执行，并把module 作为一个参数 base 传递给该方法，我们可以在这里对base做一些inject，这里对included方法进行了重写。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="n">base</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">base</span><span class="o">.</span><span class="n">nil?</span>
+</span><span class='line'>    <span class="k">raise</span> <span class="no">MultipleIncludedBlocks</span> <span class="k">if</span> <span class="n">instance_variable_defined?</span><span class="p">(</span><span class="ss">:@_included_block</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@_included_block</span> <span class="o">=</span> <span class="n">block</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="k">super</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当module a 被module include 后，如果这个方法传递了一个base，那么就直接使用ruby module中的included方法，如果我们在include的时候，传递的是一个block，那么就将该block 转化为proc对象，并赋值给 @_included_block 变量，这个变量会在 上边的 append_features方法中使用，这个block一般是用来动态给base 添加一些方法活属性用。例如:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;active_support/concern&#39;</span>
+</span><span class='line'><span class="k">module</span> <span class="nn">M</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Concern</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">included</span> <span class="k">do</span>  <span class="c1">#这里调用included方法，我们只传递了一个block，并且这个block中用来声明一些方法，将来这些方法会成为base的类方法</span>
+</span><span class='line'>    <span class="n">scope</span> <span class="ss">:disabled</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="ss">disabled</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">ClassMethods</span>
+</span><span class='line'>    <span class="c1">#...</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
     <a href="/blog/archives">Blog Archives</a>
@@ -75,15 +451,18 @@
 <aside class="sidebar">
   
     <section>
+  <h1>Categories</h1>
+    <ul id="category-list"><li><a href='/blog/categories/rails/'>Rails (1)</a></li></ul>
+</section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
     
+      <li class="post">
+        <a href="/blog/2014/02/21/hello-world/">ActiveSupport::Concern Source Code Analyse</a>
+      </li>
+    
   </ul>
 </section>
-
-
-
-
 
   
 </aside>
@@ -91,7 +470,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Your Name -
+  Copyright &copy; 2014 - naitnix -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
@@ -103,16 +482,6 @@
 
 
 
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
 
 
 
