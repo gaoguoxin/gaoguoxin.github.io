@@ -4,7 +4,7 @@
   <title><![CDATA[ruby and rails study]]></title>
   <link href="http://gaoguoxin.github.io/atom.xml" rel="self"/>
   <link href="http://gaoguoxin.github.io/"/>
-  <updated>2014-02-23T11:07:50+00:00</updated>
+  <updated>2014-02-25T06:39:41+00:00</updated>
   <id>http://gaoguoxin.github.io/</id>
   <author>
     <name><![CDATA[naitnix]]></name>
@@ -12,6 +12,239 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Active_support_autoload]]></title>
+    <link href="http://gaoguoxin.github.io/blog/2014/02/25/active-support-autoload/"/>
+    <updated>2014-02-25T05:43:38+00:00</updated>
+    <id>http://gaoguoxin.github.io/blog/2014/02/25/active-support-autoload</id>
+    <content type="html"><![CDATA[<p>在看rails源码的时候发现很多地方用到了autoload，意识到这个autoload是整个框架的基础方法，于是有时间看了遍里面的代码，关键的方法都定义在autoload.rb(active_support/dependencies/autoload.rb)下面我们来看下这个文件里面都做了些什么事:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">extended</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">base</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
+</span><span class='line'>    <span class="vi">@_autoloads</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1">#hash 盛放该module需要一次性require的文件,每个元素的key为大写的module的名字，value为该module对应的文件(包含路径)</span>
+</span><span class='line'>    <span class="vi">@_under_path</span> <span class="o">=</span> <span class="kp">nil</span> <span class="c1">#字符串，代表需要load的某个模块的路径</span>
+</span><span class='line'>    <span class="vi">@_at_path</span> <span class="o">=</span> <span class="kp">nil</span>    <span class="c1">#字符串，代表需要load的某个模块的路径</span>
+</span><span class='line'>    <span class="vi">@_eager_autoload</span> <span class="o">=</span> <span class="kp">false</span> <span class="c1">#标识位</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上代码，很明显，给base(某个可能extend ActiveSupport::Autoload的模块)声明了几个实例变量。</p>
+
+<!--more-->
+
+
+<p>再来看看autoload方法,这个方法是我们在rails源码中看到最多的</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">autoload</span><span class="p">(</span><span class="n">const_name</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="vi">@_at_path</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">unless</span> <span class="n">path</span>
+</span><span class='line'>    <span class="n">full</span> <span class="o">=</span> <span class="o">[</span><span class="nb">name</span><span class="p">,</span> <span class="vi">@_under_path</span><span class="p">,</span> <span class="n">const_name</span><span class="o">.</span><span class="n">to_s</span><span class="o">].</span><span class="n">compact</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;::&quot;</span><span class="p">)</span><span class="c1">#生成一个用::隔开的字符串</span>
+</span><span class='line'>    <span class="n">path</span> <span class="o">=</span> <span class="no">Inflector</span><span class="o">.</span><span class="n">underscore</span><span class="p">(</span><span class="n">full</span><span class="p">)</span><span class="c1">#生成要加载模块的路径 例如:ActiveSupport #=&gt; active_support</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="vi">@_eager_autoload</span>
+</span><span class='line'>    <span class="vi">@_autoloads</span><span class="o">[</span><span class="n">const_name</span><span class="o">]</span> <span class="o">=</span> <span class="n">path</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">super</span> <span class="n">const_name</span><span class="p">,</span> <span class="n">path</span> <span class="c1">#调用ruby的autoload方法，这个方法是一个懒加载，即只有用到模块中的方法或者变量的时候，才会去require该文件</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>接下来的几个方法:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">autoload_under</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@_under_path</span><span class="p">,</span> <span class="n">old_path</span> <span class="o">=</span> <span class="n">path</span><span class="p">,</span> <span class="vi">@_under_path</span> <span class="c1">#设置了@_under_path变量</span>
+</span><span class='line'>  <span class="k">yield</span>
+</span><span class='line'><span class="k">ensure</span>
+</span><span class='line'>  <span class="vi">@_under_path</span> <span class="o">=</span> <span class="n">old_path</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">autoload_at</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</span><span class='line'>  <span class="vi">@_at_path</span><span class="p">,</span> <span class="n">old_path</span> <span class="o">=</span> <span class="n">path</span><span class="p">,</span> <span class="vi">@_at_path</span><span class="c1">#设置了@_at_path变量</span>
+</span><span class='line'>  <span class="k">yield</span>
+</span><span class='line'><span class="k">ensure</span>
+</span><span class='line'>  <span class="vi">@_at_path</span> <span class="o">=</span> <span class="n">old_path</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">eager_autoload</span> <span class="c1">#这个方法用来一次性require所有所需的文件</span>
+</span><span class='line'>  <span class="n">old_eager</span><span class="p">,</span> <span class="vi">@_eager_autoload</span> <span class="o">=</span> <span class="vi">@_eager_autoload</span><span class="p">,</span> <span class="kp">true</span><span class="c1">#设置了@_eager_autoload变量为true</span>
+</span><span class='line'>  <span class="k">yield</span>
+</span><span class='line'><span class="k">ensure</span>
+</span><span class='line'>  <span class="vi">@_eager_autoload</span> <span class="o">=</span> <span class="n">old_eager</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上这三个方法都是后面跟着block的，所以这三个函数都yield了这个block，并且设置了base模块的几个基本的实例变量，这些block中的内容，如果你才看看rails源码的话，你会发现，基本上都是在里面调用了autoload方法:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">autoload_under</span> <span class="s2">&quot;renderer&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Renderer</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:AbstractRenderer</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:PartialRenderer</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:TemplateRenderer</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:StreamingTemplateRenderer</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">autoload_at</span> <span class="s2">&quot;action_view/template/resolver&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Resolver</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:PathResolver</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:OptimizedFileSystemResolver</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:FallbackFileSystemResolver</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">eager_autoload</span> <span class="k">do</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Base</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Context</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:CompiledTemplates</span><span class="p">,</span> <span class="s2">&quot;action_view/context&quot;</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Digestor</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Helpers</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:LookupContext</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Layouts</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:PathSet</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:RecordIdentifier</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Rendering</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:RoutingUrlFor</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Template</span>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:ViewPaths</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个时候我们回过头来在来看 autoload方法，里面有这么一句:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="vi">@_eager_autoload</span>
+</span><span class='line'>  <span class="vi">@_autoloads</span><span class="o">[</span><span class="n">const_name</span><span class="o">]</span> <span class="o">=</span> <span class="n">path</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>也就是说，只要我们调用了eager_autoload这个方法，我们就会设置@<em>eager_autoload值为true，并且我们还设置了@</em>autoloads这个hash，这个hash就是用来盛放我们将来需要一次性require的文件的路径</p>
+
+<p>再来看看最重要的一个方法:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">eager_load!</span>
+</span><span class='line'>  <span class="vi">@_autoloads</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span> <span class="nb">require</span> <span class="n">file</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个方法是我们最终实现饥饿加载的最终代码所在，即一次性require我们所需的所有的module文件。</p>
+
+<p>这个autoload模块就是用来方便我们require我们所需要的module文件的,如果一个module extend了这个autoload模块的话，那么他就可以利用autoload这个方法来加载同一个module 名命名的文件加下的其他模块文件而不用制定文件的路径。还可以通过eager_autoload方法来指定这个module需要批量require 的module的名字，然后通过 eager_load!方法就可以实现一次性require多个文件，这个方法的好处是避免了我们在文件的开头写很多的require，如下面的例子所示:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">MyLib</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Autoload</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Model</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">eager_autoload</span> <span class="k">do</span>
+</span><span class='line'>    <span class="nb">autoload</span> <span class="ss">:Cache</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Then</span> <span class="n">your</span> <span class="n">library</span> <span class="n">can</span> <span class="n">be</span> <span class="n">eager</span> <span class="n">loaded</span> <span class="n">by</span> <span class="n">simply</span> <span class="ss">calling</span><span class="p">:</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">MyLib</span><span class="o">.</span><span class="n">eager_load!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ActiveSupport::Concern Source Code Analyse]]></title>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Rails | ruby and rails study]]></title>
   <link href="http://gaoguoxin.github.io/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://gaoguoxin.github.io/"/>
-  <updated>2014-02-23T11:07:50+00:00</updated>
+  <updated>2014-02-25T06:39:41+00:00</updated>
   <id>http://gaoguoxin.github.io/</id>
   <author>
     <name><![CDATA[naitnix]]></name>
@@ -12,6 +12,167 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Active_support_autoload]]></title>
+    <link href="http://gaoguoxin.github.io/blog/2014/02/25/active-support-autoload/"/>
+    <updated>2014-02-25T05:43:38+00:00</updated>
+    <id>http://gaoguoxin.github.io/blog/2014/02/25/active-support-autoload</id>
+    <content type="html"><![CDATA[<p>在看rails源码的时候发现很多地方用到了autoload，意识到这个autoload是整个框架的基础方法，于是有时间看了遍里面的代码，关键的方法都定义在autoload.rb(active_support/dependencies/autoload.rb)下面我们来看下这个文件里面都做了些什么事:</p>
+
+<p>``` ruby</p>
+
+<p>def self.extended(base)
+  base.class_eval do</p>
+
+<pre><code>@_autoloads = {} #hash 盛放该module需要一次性require的文件,每个元素的key为大写的module的名字，value为该module对应的文件(包含路径)
+@_under_path = nil #字符串，代表需要load的某个模块的路径
+@_at_path = nil    #字符串，代表需要load的某个模块的路径
+@_eager_autoload = false #标识位
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>```</p>
+
+<p>以上代码，很明显，给base(某个可能extend ActiveSupport::Autoload的模块)声明了几个实例变量。</p>
+
+<!--more-->
+
+
+<p>再来看看autoload方法,这个方法是我们在rails源码中看到最多的
+``` ruby</p>
+
+<p>def autoload(const_name, path = @_at_path)
+  unless path</p>
+
+<pre><code>full = [name, @_under_path, const_name.to_s].compact.join("::")#生成一个用::隔开的字符串
+path = Inflector.underscore(full)#生成要加载模块的路径 例如:ActiveSupport #=&gt; active_support
+</code></pre>
+
+<p>  end</p>
+
+<p>  if @_eager_autoload</p>
+
+<pre><code>@_autoloads[const_name] = path
+</code></pre>
+
+<p>  end</p>
+
+<p>  super const_name, path #调用ruby的autoload方法，这个方法是一个懒加载，即只有用到模块中的方法或者变量的时候，才会去require该文件
+end</p>
+
+<p>```</p>
+
+<p>接下来的几个方法:</p>
+
+<p>``` ruby
+def autoload_under(path)
+  @<em>under_path, old_path = path, @</em>under_path #设置了@<em>under_path变量
+  yield
+ensure
+  @</em>under_path = old_path
+end</p>
+
+<p>def autoload_at(path)
+  @<em>at_path, old_path = path, @</em>at_path#设置了@<em>at_path变量
+  yield
+ensure
+  @</em>at_path = old_path
+end</p>
+
+<p>def eager_autoload #这个方法用来一次性require所有所需的文件
+  old_eager, @<em>eager_autoload = @</em>eager_autoload, true#设置了@<em>eager_autoload变量为true
+  yield
+ensure
+  @</em>eager_autoload = old_eager
+end
+```</p>
+
+<p>以上这三个方法都是后面跟着block的，所以这三个函数都yield了这个block，并且设置了base模块的几个基本的实例变量，这些block中的内容，如果你才看看rails源码的话，你会发现，基本上都是在里面调用了autoload方法:</p>
+
+<p>``` ruby
+autoload_under &ldquo;renderer&rdquo; do
+  autoload :Renderer
+  autoload :AbstractRenderer
+  autoload :PartialRenderer
+  autoload :TemplateRenderer
+  autoload :StreamingTemplateRenderer
+end</p>
+
+<p>autoload_at &ldquo;action_view/template/resolver&rdquo; do
+  autoload :Resolver
+  autoload :PathResolver
+  autoload :OptimizedFileSystemResolver
+  autoload :FallbackFileSystemResolver
+end</p>
+
+<p>eager_autoload do
+  autoload :Base
+  autoload :Context
+  autoload :CompiledTemplates, &ldquo;action_view/context&rdquo;
+  autoload :Digestor
+  autoload :Helpers
+  autoload :LookupContext
+  autoload :Layouts
+  autoload :PathSet
+  autoload :RecordIdentifier
+  autoload :Rendering
+  autoload :RoutingUrlFor
+  autoload :Template
+  autoload :ViewPaths
+end</p>
+
+<p>```</p>
+
+<p>这个时候我们回过头来在来看 autoload方法，里面有这么一句:</p>
+
+<p>``` ruby</p>
+
+<p>if @<em>eager_autoload
+  @</em>autoloads[const_name] = path
+end</p>
+
+<p>```
+也就是说，只要我们调用了eager_autoload这个方法，我们就会设置@<em>eager_autoload值为true，并且我们还设置了@</em>autoloads这个hash，这个hash就是用来盛放我们将来需要一次性require的文件的路径</p>
+
+<p>再来看看最重要的一个方法:</p>
+
+<p>``` ruby</p>
+
+<p>def eager_load!
+  @_autoloads.values.each { |file| require file }
+end</p>
+
+<p>```</p>
+
+<p>这个方法是我们最终实现饥饿加载的最终代码所在，即一次性require我们所需的所有的module文件。</p>
+
+<p>这个autoload模块就是用来方便我们require我们所需要的module文件的,如果一个module extend了这个autoload模块的话，那么他就可以利用autoload这个方法来加载同一个module 名命名的文件加下的其他模块文件而不用制定文件的路径。还可以通过eager_autoload方法来指定这个module需要批量require 的module的名字，然后通过 eager_load!方法就可以实现一次性require多个文件，这个方法的好处是避免了我们在文件的开头写很多的require，如下面的例子所示:</p>
+
+<p>``` ruby</p>
+
+<p>module MyLib
+  extend ActiveSupport::Autoload</p>
+
+<p>  autoload :Model</p>
+
+<p>  eager_autoload do</p>
+
+<pre><code>autoload :Cache
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>Then your library can be eager loaded by simply calling:</p>
+
+<p>MyLib.eager_load!</p>
+
+<p>```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ActiveSupport::Concern Source Code Analyse]]></title>

@@ -9,22 +9,7 @@
   <meta name="author" content="naitnix">
 
   
-  <meta name="description" content="1、首先我们来看个例子 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-module M def self.included(base) base.extend ClassMethods base.send(:include, InstanceMethods) scope &hellip;">
+  <meta name="description" content="在看rails源码的时候发现很多地方用到了autoload，意识到这个autoload是整个框架的基础方法，于是有时间看了遍里面的代码，关键的方法都定义在autoload.rb(active_support/dependencies/autoload.rb)下面我们来看下这个文件里面都做了些什么事 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +66,68 @@ module M def self.included(base) base.extend ClassMethods base.send(:include, In
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/25/active-support-autoload/">Active_support_autoload</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-25T05:43:38+00:00" pubdate data-updated="true">02/25/2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在看rails源码的时候发现很多地方用到了autoload，意识到这个autoload是整个框架的基础方法，于是有时间看了遍里面的代码，关键的方法都定义在autoload.rb(active_support/dependencies/autoload.rb)下面我们来看下这个文件里面都做了些什么事:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">extended</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">base</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
+</span><span class='line'>    <span class="vi">@_autoloads</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1">#hash 盛放该module需要一次性require的文件,每个元素的key为大写的module的名字，value为该module对应的文件(包含路径)</span>
+</span><span class='line'>    <span class="vi">@_under_path</span> <span class="o">=</span> <span class="kp">nil</span> <span class="c1">#字符串，代表需要load的某个模块的路径</span>
+</span><span class='line'>    <span class="vi">@_at_path</span> <span class="o">=</span> <span class="kp">nil</span>    <span class="c1">#字符串，代表需要load的某个模块的路径</span>
+</span><span class='line'>    <span class="vi">@_eager_autoload</span> <span class="o">=</span> <span class="kp">false</span> <span class="c1">#标识位</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上代码，很明显，给base(某个可能extend ActiveSupport::Autoload的模块)声明了几个实例变量。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/02/25/active-support-autoload/">阅读全部 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -452,10 +499,14 @@ module M def self.included(base) base.extend ClassMethods base.send(:include, In
   
     <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/categories/rails/'>Rails (1)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/rails/'>Rails (2)</a></li></ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/25/active-support-autoload/">Active_support_autoload</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/02/21/hello-world/">ActiveSupport::Concern Source Code Analyse</a>
