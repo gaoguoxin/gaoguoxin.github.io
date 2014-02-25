@@ -26,6 +26,8 @@ end
 ```
 这是一个再普通不过的module了，当某个模块(或者类)include它以后，它让目标模块(或者类)去txtend  ClassMethods 这个模块，并去include  InstanceMethods 这个模块，这样的话，目标模块(或者类)在include M 的时候，这个目标模块(或者类)就拥有了ClassMethods这个模块中定义的方法并把这些方法当作类方法，并拥有了InstanceMethods模块的方法，并把这个模块中的方法作为自己的实例方法。如果你不觉得麻烦的话，那么这种方式是可选的或者，干脆直接定义实例方法，而不定义InstanceMethods，因为在include一个module的时候，module里面定义的方法自动就为实例方法。
 
+<!-- more -->
+
 2、再来看看另外一个例子
 ``` ruby
 module Foo
