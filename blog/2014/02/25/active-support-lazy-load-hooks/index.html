@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>ruby and rails study</title>
+  <title>Active_support_lazy_load_hooks - ruby and rails study</title>
   <meta name="author" content="naitnix">
 
   
@@ -28,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://gaoguoxin.github.io">
+  <link rel="canonical" href="http://gaoguoxin.github.io/blog/2014/02/25/active-support-lazy-load-hooks">
   <link href="/images/favicon.ico" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="ruby and rails study" type="application/atom+xml">
@@ -74,15 +74,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/02/25/active-support-lazy-load-hooks/">Active_support_lazy_load_hooks</a></h1>
+      <h1 class="entry-title">Active_support_lazy_load_hooks</h1>
     
     
       <p class="meta">
@@ -105,7 +102,7 @@
   </header>
 
 
-  <div class="entry-content"><p>在rails的源码中经常看到有ActiveSupport.on_load这样的代码出现，于是找到代码的定义处(active_support/lazy_load_hooks.rb)中，里面的代码很简单，但是为我们提供的功能却很强大，下面我们来看一下:</p>
+<div class="entry-content"><p>在rails的源码中经常看到有ActiveSupport.on_load这样的代码出现，于是找到代码的定义处(active_support/lazy_load_hooks.rb)中，里面的代码很简单，但是为我们提供的功能却很强大，下面我们来看一下:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -162,108 +159,10 @@
 
 <p>下面来看一下这个azy_load_hooks用在什么地方，我们打开active_record/railtie.rb这个文件，我们会看见很多类似的代码:</p>
 
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/02/25/active-support-lazy-load-hooks/">阅读全部 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/25/active-support-autoload/">Active_support_autoload</a></h1>
-    
-    
-      <p class="meta">
-        
+<!-- more -->
 
 
 
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-25T05:43:38+00:00" pubdate data-updated="true">02/25/2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>在看rails源码的时候发现很多地方用到了autoload，意识到这个autoload是整个框架的基础方法，于是有时间看了遍里面的代码，关键的方法都定义在autoload.rb(active_support/dependencies/autoload.rb)下面我们来看下这个文件里面都做了些什么事:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">extended</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">base</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
-</span><span class='line'>    <span class="vi">@_autoloads</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1">#hash 盛放该module需要一次性require的文件,每个元素的key为大写的module的名字，value为该module对应的文件(包含路径)</span>
-</span><span class='line'>    <span class="vi">@_under_path</span> <span class="o">=</span> <span class="kp">nil</span> <span class="c1">#字符串，代表需要load的某个模块的路径</span>
-</span><span class='line'>    <span class="vi">@_at_path</span> <span class="o">=</span> <span class="kp">nil</span>    <span class="c1">#字符串，代表需要load的某个模块的路径</span>
-</span><span class='line'>    <span class="vi">@_eager_autoload</span> <span class="o">=</span> <span class="kp">false</span> <span class="c1">#标识位</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>以上代码，很明显，给base(某个可能extend ActiveSupport::Autoload的模块)声明了几个实例变量。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/02/25/active-support-autoload/">阅读全部 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/21/hello-world/">ActiveSupport::Concern Source Code Analyse</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-21T02:44:45+00:00" pubdate data-updated="true">02/21/2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>1、首先我们来看个例子</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -277,46 +176,102 @@
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">M</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">extend</span> <span class="no">ClassMethods</span>
-</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:include</span><span class="p">,</span> <span class="no">InstanceMethods</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">scope</span> <span class="ss">:disabled</span><span class="p">,</span> <span class="n">where</span><span class="p">(</span><span class="ss">:disabled</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">ActiveSupport</span><span class="o">.</span><span class="n">on_load</span><span class="p">(</span><span class="ss">:active_record</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">filename</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">paths</span><span class="o">[</span><span class="s2">&quot;db&quot;</span><span class="o">].</span><span class="n">first</span><span class="p">,</span> <span class="s2">&quot;schema_cache.dump&quot;</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="k">module</span> <span class="nn">ClassMethods</span>
-</span><span class='line'>    <span class="c1">#...</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">module</span> <span class="nn">InstanceMethods</span>
-</span><span class='line'>    <span class="c1">#...</span>
+</span><span class='line'>  <span class="k">if</span> <span class="no">File</span><span class="o">.</span><span class="n">file?</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">cache</span> <span class="o">=</span> <span class="no">Marshal</span><span class="o">.</span><span class="n">load</span> <span class="no">File</span><span class="o">.</span><span class="n">binread</span> <span class="n">filename</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">cache</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Migrator</span><span class="o">.</span><span class="n">current_version</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">schema_cache</span> <span class="o">=</span> <span class="n">cache</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="nb">warn</span> <span class="s2">&quot;Ignoring db/schema_cache.dump because it has expired. The current schema version is </span><span class="si">#{</span><span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Migrator</span><span class="o">.</span><span class="n">current_version</span><span class="si">}</span><span class="s2">, but the one in the cache is </span><span class="si">#{</span><span class="n">cache</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">.&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>这是一个再普通不过的module了，当某个模块(或者类)include它以后，它让目标模块(或者类)去txtend  ClassMethods 这个模块，并去include  InstanceMethods 这个模块，这样的话，目标模块(或者类)在include M 的时候，这个目标模块(或者类)就拥有了ClassMethods这个模块中定义的方法并把这些方法当作类方法，并拥有了InstanceMethods模块的方法，并把这个模块中的方法作为自己的实例方法。如果你不觉得麻烦的话，那么这种方式是可选的或者，干脆直接定义实例方法，而不定义InstanceMethods，因为在include一个module的时候，module里面定义的方法自动就为实例方法。</p>
+<p>方法后的block是我们真正要做的额外的操作这些操作可能会延长我们的app的启动的过程，所以，我们在这里使用on_load将这些要执行的方法暂时存放在一个变量里，只有在程序需要的时候才去执行这些额外的操作，这样的话，我们的app启动的就会更快</p>
 
+<p>最后的执行是在active_record/base.rb文件中，代码的最下面执行到了run_load_hooks方法:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">ActiveSupport</span><span class="o">.</span><span class="n">run_load_hooks</span><span class="p">(</span><span class="ss">:active_record</span><span class="p">,</span> <span class="no">Base</span><span class="p">)</span> <span class="c1">#调用run_load_hooks，额外的操作开始执行。</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果你打开rails其他的railtie的话，你会发现也有azy_load_blocks方法，他们起到的作用都是一样的，即，提高我们应用启动的速度</p>
 </div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/02/21/hello-world/">阅读全部 &rarr;</a>
-    </footer>
+
+<span class="byline author vcard">Posted by <span class="fn">naitnix</span></span>
+
+      
+
+
+
+
+
+
+
+
   
 
 
-    </article>
+<time datetime="2014-02-25T08:42:32+00:00" pubdate data-updated="true">02/25/2014</time>
+      
+
+<span class="categories">
   
-  <div class="pagination">
+    <a class='category' href='/blog/categories/rails/'>Rails</a>
+  
+</span>
+
+
+    </p>
     
-    <a href="/blog/archives">Blog Archives</a>
+      <div class="sharing">
+  
+  
+  
+</div>
+
     
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/25/active-support-autoload/" title="Previous Post: active_support_autoload">&laquo; active_support_autoload</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+
+<section imagesd="comment">
+  <h1>Add a comment</h1>
+    <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+    <div class="ds-thread"></div>
+    <script type="text/javascript">
+      var duoshuoQuery = {short_name:"smarterhjw"};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = 'http://static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+    </script>
   </div>
+</section>
+
+
 </div>
+
 <aside class="sidebar">
   
     <section>
@@ -343,6 +298,7 @@
 
   
 </aside>
+
 
     </div>
   </div>

@@ -2,15 +2,19 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://gaoguoxin.github.io/blog/2014/02/21/hello-world/</loc>
-        <lastmod>2014-02-22T14:47:54+00:00</lastmod>
+        <lastmod>2014-02-25T09:16:55+00:00</lastmod>
     </url>
     <url>
         <loc>http://gaoguoxin.github.io/blog/2014/02/25/active-support-autoload/</loc>
         <lastmod>2014-02-25T06:37:49+00:00</lastmod>
     </url>
     <url>
+        <loc>http://gaoguoxin.github.io/blog/2014/02/25/active-support-lazy-load-hooks/</loc>
+        <lastmod>2014-02-25T09:16:00+00:00</lastmod>
+    </url>
+    <url>
         <loc>http://gaoguoxin.github.io/blog/archives/</loc>
-        <lastmod>2014-02-25T06:37:49+00:00</lastmod>
+        <lastmod>2014-02-25T09:16:55+00:00</lastmod>
     </url>
     <url>
         <loc>http://gaoguoxin.github.io/robots.txt</loc>
@@ -18,6 +22,6 @@
     </url>
     <url>
         <loc>http://gaoguoxin.github.io/</loc>
-        <lastmod>2014-02-25T06:37:49+00:00</lastmod>
+        <lastmod>2014-02-25T09:16:55+00:00</lastmod>
     </url>
 </urlset>

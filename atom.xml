@@ -4,7 +4,7 @@
   <title><![CDATA[ruby and rails study]]></title>
   <link href="http://gaoguoxin.github.io/atom.xml" rel="self"/>
   <link href="http://gaoguoxin.github.io/"/>
-  <updated>2014-02-25T06:39:41+00:00</updated>
+  <updated>2014-02-25T09:18:47+00:00</updated>
   <id>http://gaoguoxin.github.io/</id>
   <author>
     <name><![CDATA[naitnix]]></name>
@@ -12,6 +12,113 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Active_support_lazy_load_hooks]]></title>
+    <link href="http://gaoguoxin.github.io/blog/2014/02/25/active-support-lazy-load-hooks/"/>
+    <updated>2014-02-25T08:42:32+00:00</updated>
+    <id>http://gaoguoxin.github.io/blog/2014/02/25/active-support-lazy-load-hooks</id>
+    <content type="html"><![CDATA[<p>在rails的源码中经常看到有ActiveSupport.on_load这样的代码出现，于是找到代码的定义处(active_support/lazy_load_hooks.rb)中，里面的代码很简单，但是为我们提供的功能却很强大，下面我们来看一下:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@load_hooks</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span><span class="n">k</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="o">[]</span> <span class="p">}</span> <span class="c1">#定义一个空的hash,用来存放还没有被执行的blocks</span>
+</span><span class='line'><span class="vi">@loaded</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span><span class="n">k</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="o">[]</span> <span class="p">}</span> <span class="c1">#定义一个空hash,这个空hash主要用来存放已经被加载的载体类。</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">on_load</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{},</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span><span class="c1">#这个方法是见到最多的，很多我们需要将来执行的代码块儿都是通过这个方法存储的</span>
+</span><span class='line'>  <span class="vi">@loaded</span><span class="o">[</span><span class="nb">name</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">base</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">execute_hook</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="vi">@load_hooks</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">block</span><span class="p">,</span> <span class="n">options</span><span class="o">]</span> <span class="c1">#每次调用该方法时，该方法后面block要执行的动作都被暂时保存在这个变量中</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">execute_hook</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span> <span class="c1">#这个方法主要是用来执行存储的代码用</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">options</span><span class="o">[</span><span class="ss">:yield</span><span class="o">]</span>
+</span><span class='line'>    <span class="n">block</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">instance_eval</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">run_load_hooks</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">base</span> <span class="o">=</span> <span class="no">Object</span><span class="p">)</span> <span class="c1">#执行开始的地方，当某个文件require了这个module之后，并切调用了这个方法之后，执行开始</span>
+</span><span class='line'>  <span class="vi">@loaded</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="n">base</span>
+</span><span class='line'>  <span class="vi">@load_hooks</span><span class="o">[</span><span class="nb">name</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">hook</span><span class="p">,</span> <span class="n">options</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">execute_hook</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">hook</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下面来看一下这个azy_load_hooks用在什么地方，我们打开active_record/railtie.rb这个文件，我们会看见很多类似的代码:</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">ActiveSupport</span><span class="o">.</span><span class="n">on_load</span><span class="p">(</span><span class="ss">:active_record</span><span class="p">)</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">filename</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">paths</span><span class="o">[</span><span class="s2">&quot;db&quot;</span><span class="o">].</span><span class="n">first</span><span class="p">,</span> <span class="s2">&quot;schema_cache.dump&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="no">File</span><span class="o">.</span><span class="n">file?</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">cache</span> <span class="o">=</span> <span class="no">Marshal</span><span class="o">.</span><span class="n">load</span> <span class="no">File</span><span class="o">.</span><span class="n">binread</span> <span class="n">filename</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">cache</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Migrator</span><span class="o">.</span><span class="n">current_version</span>
+</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">schema_cache</span> <span class="o">=</span> <span class="n">cache</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="nb">warn</span> <span class="s2">&quot;Ignoring db/schema_cache.dump because it has expired. The current schema version is </span><span class="si">#{</span><span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Migrator</span><span class="o">.</span><span class="n">current_version</span><span class="si">}</span><span class="s2">, but the one in the cache is </span><span class="si">#{</span><span class="n">cache</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">.&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>方法后的block是我们真正要做的额外的操作这些操作可能会延长我们的app的启动的过程，所以，我们在这里使用on_load将这些要执行的方法暂时存放在一个变量里，只有在程序需要的时候才去执行这些额外的操作，这样的话，我们的app启动的就会更快</p>
+
+<p>最后的执行是在active_record/base.rb文件中，代码的最下面执行到了run_load_hooks方法:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">ActiveSupport</span><span class="o">.</span><span class="n">run_load_hooks</span><span class="p">(</span><span class="ss">:active_record</span><span class="p">,</span> <span class="no">Base</span><span class="p">)</span> <span class="c1">#调用run_load_hooks，额外的操作开始执行。</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果你打开rails其他的railtie的话，你会发现也有azy_load_blocks方法，他们起到的作用都是一样的，即，提高我们应用启动的速度</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Active_support_autoload]]></title>
@@ -287,6 +394,9 @@
 
 
 <p>这是一个再普通不过的module了，当某个模块(或者类)include它以后，它让目标模块(或者类)去txtend  ClassMethods 这个模块，并去include  InstanceMethods 这个模块，这样的话，目标模块(或者类)在include M 的时候，这个目标模块(或者类)就拥有了ClassMethods这个模块中定义的方法并把这些方法当作类方法，并拥有了InstanceMethods模块的方法，并把这个模块中的方法作为自己的实例方法。如果你不觉得麻烦的话，那么这种方式是可选的或者，干脆直接定义实例方法，而不定义InstanceMethods，因为在include一个module的时候，module里面定义的方法自动就为实例方法。</p>
+
+<!-- more -->
+
 
 <p>2、再来看看另外一个例子</p>
 
