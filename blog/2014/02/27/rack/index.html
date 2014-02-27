@@ -98,6 +98,9 @@
 
 <p>以上是rack作者Christian Neukirchen的一句话，意思是说，他在自己开发自己的ruby web framework的时候意识到了这个问题，即很多的ruby web 框架开发者在开发自己的框架的时候都在做很多重复性的工作，写很多的代码来实现一个处理器，以达到这些处理器能适应他们想要用到的每一个webserver，实际上他们写的这些处理器(handler)其实都是在做一件事就是处理http，即接受一个request并且返回一个response。</p>
 
+<!--more-->
+
+
 <p>rack的灵感来源于phyton社区的wsgi，目标是实现一个最小化的接口来链接web framework  和 web server。rack为用ruby开发的web框架提供了一个最小化的，模块化的，并且适应性强的的接口，它用最简单的方式包装了http request 和http response，它结合并提取了web server 和 ruby web framework 之间的api 到一个call 方法里。</p>
 
 <h2>Rack的最简单实现</h2>
