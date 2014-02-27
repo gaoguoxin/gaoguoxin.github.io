@@ -13,8 +13,12 @@
         <lastmod>2014-02-25T09:16:00+00:00</lastmod>
     </url>
     <url>
+        <loc>http://gaoguoxin.github.io/blog/2014/02/25/rails-initialize/</loc>
+        <lastmod>2014-02-27T00:43:00+00:00</lastmod>
+    </url>
+    <url>
         <loc>http://gaoguoxin.github.io/blog/archives/</loc>
-        <lastmod>2014-02-25T09:16:55+00:00</lastmod>
+        <lastmod>2014-02-27T00:43:00+00:00</lastmod>
     </url>
     <url>
         <loc>http://gaoguoxin.github.io/robots.txt</loc>
@@ -22,6 +26,6 @@
     </url>
     <url>
         <loc>http://gaoguoxin.github.io/</loc>
-        <lastmod>2014-02-25T09:16:55+00:00</lastmod>
+        <lastmod>2014-02-27T00:43:00+00:00</lastmod>
     </url>
 </urlset>

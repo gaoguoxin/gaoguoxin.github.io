@@ -9,17 +9,12 @@
   <meta name="author" content="naitnix">
 
   
-  <meta name="description" content="在rails的源码中经常看到有ActiveSupport.on_load这样的代码出现，于是找到代码的定义处(active_support/lazy_load_hooks.rb)中，里面的代码很简单，但是为我们提供的功能却很强大，下面我们来看一下: 1
+  <meta name="description" content="我们经常在我们的rails项目的根目录执行这样的操作，比如: 1
 2
 3
-4
-5
-6
-7
-8
-9
-10
-11 &hellip;">
+rails s #=&gt; 启动本地服务器，让我们的项目跑起来
+rails c #=&gt; 启动console
+rails db #=&gt; 启动我们的database终端 上面的命令你可能已经再熟悉不过了， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +71,69 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/25/rails-initialize/">Rails_initialize</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-25T09:26:57+00:00" pubdate data-updated="true">02/25/2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>我们经常在我们的rails项目的根目录执行这样的操作，比如:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rails</span> <span class="n">s</span>  <span class="c1">#=&gt; 启动本地服务器，让我们的项目跑起来</span>
+</span><span class='line'><span class="n">rails</span> <span class="n">c</span>  <span class="c1">#=&gt; 启动console</span>
+</span><span class='line'><span class="n">rails</span> <span class="n">db</span> <span class="c1">#=&gt; 启动我们的database终端</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面的命令你可能已经再熟悉不过了，但是你想过没有，为什么rails命令可以执行?难道rails是我们系统的命令么?这就设计我本文要讲的，rails的启动流成了。在你的终端输入</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>which rails <span class="c">#=&gt; /home/naitnix/.rvm/gems/ruby-1.9.3-p194/bin/rails (这个路径是你的rails可执行文件的所在路径)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="nv">$PATH</span>  <span class="c">#=&gt; /home/naitnix/.rvm/gems/ruby-1.9.3-p194/bin (我们的系统环境变量)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/02/25/rails-initialize/">阅读全部 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -321,10 +379,14 @@
   
     <section>
   <h1>Categories</h1>
-    <ul id="category-list"><li><a href='/blog/categories/rails/'>Rails (3)</a></li></ul>
+    <ul id="category-list"><li><a href='/blog/categories/rails/'>Rails (4)</a></li></ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/25/rails-initialize/">Rails_initialize</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/02/25/active-support-lazy-load-hooks/">Active_support_lazy_load_hooks</a>

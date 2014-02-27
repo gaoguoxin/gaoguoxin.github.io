@@ -1,24 +1,103 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[ruby and rails study]]></title>
-  <link href="http://gaoguoxin.github.io/atom.xml" rel="self"/>
-  <link href="http://gaoguoxin.github.io/"/>
-  <updated>2014-02-27T00:43:20+00:00</updated>
-  <id>http://gaoguoxin.github.io/</id>
-  <author>
-    <name><![CDATA[naitnix]]></name>
-    
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Rails_initialize - ruby and rails study</title>
+  <meta name="author" content="naitnix">
 
   
-  <entry>
-    <title type="html"><![CDATA[Rails_initialize]]></title>
-    <link href="http://gaoguoxin.github.io/blog/2014/02/25/rails-initialize/"/>
-    <updated>2014-02-25T09:26:57+00:00</updated>
-    <id>http://gaoguoxin.github.io/blog/2014/02/25/rails-initialize</id>
-    <content type="html"><![CDATA[<p>我们经常在我们的rails项目的根目录执行这样的操作，比如:</p>
+  <meta name="description" content="我们经常在我们的rails项目的根目录执行这样的操作，比如: 1
+2
+3
+rails s #=&gt; 启动本地服务器，让我们的项目跑起来
+rails c #=&gt; 启动console
+rails db #=&gt; 启动我们的database终端 上面的命令你可能已经再熟悉不过了， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://gaoguoxin.github.io/blog/2014/02/25/rails-initialize">
+  <link href="/images/favicon.ico" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="ruby and rails study" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">ruby and rails study</a></h1>
+  
+    <h2>鸟欲高飞先震翅,人欲奋进先读书</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:gaoguoxin.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Rails_initialize</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-25T09:26:57+00:00" pubdate data-updated="true">02/25/2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>我们经常在我们的rails项目的根目录执行这样的操作，比如:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1449,683 +1528,128 @@
 
 
 
-]]></content>
-  </entry>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-  <entry>
-    <title type="html"><![CDATA[Active_support_lazy_load_hooks]]></title>
-    <link href="http://gaoguoxin.github.io/blog/2014/02/25/active-support-lazy-load-hooks/"/>
-    <updated>2014-02-25T08:42:32+00:00</updated>
-    <id>http://gaoguoxin.github.io/blog/2014/02/25/active-support-lazy-load-hooks</id>
-    <content type="html"><![CDATA[<p>在rails的源码中经常看到有ActiveSupport.on_load这样的代码出现，于是找到代码的定义处(active_support/lazy_load_hooks.rb)中，里面的代码很简单，但是为我们提供的功能却很强大，下面我们来看一下:</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="vi">@load_hooks</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span><span class="n">k</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="o">[]</span> <span class="p">}</span> <span class="c1">#定义一个空的hash,用来存放还没有被执行的blocks</span>
-</span><span class='line'><span class="vi">@loaded</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span><span class="n">k</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="o">[]</span> <span class="p">}</span> <span class="c1">#定义一个空hash,这个空hash主要用来存放已经被加载的载体类。</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">on_load</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{},</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span><span class="c1">#这个方法是见到最多的，很多我们需要将来执行的代码块儿都是通过这个方法存储的</span>
-</span><span class='line'>  <span class="vi">@loaded</span><span class="o">[</span><span class="nb">name</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">base</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">execute_hook</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="vi">@load_hooks</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="o">[</span><span class="n">block</span><span class="p">,</span> <span class="n">options</span><span class="o">]</span> <span class="c1">#每次调用该方法时，该方法后面block要执行的动作都被暂时保存在这个变量中</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">execute_hook</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span> <span class="c1">#这个方法主要是用来执行存储的代码用</span>
-</span><span class='line'>  <span class="k">if</span> <span class="n">options</span><span class="o">[</span><span class="ss">:yield</span><span class="o">]</span>
-</span><span class='line'>    <span class="n">block</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">instance_eval</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">run_load_hooks</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">base</span> <span class="o">=</span> <span class="no">Object</span><span class="p">)</span> <span class="c1">#执行开始的地方，当某个文件require了这个module之后，并切调用了这个方法之后，执行开始</span>
-</span><span class='line'>  <span class="vi">@loaded</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="n">base</span>
-</span><span class='line'>  <span class="vi">@load_hooks</span><span class="o">[</span><span class="nb">name</span><span class="o">].</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">hook</span><span class="p">,</span> <span class="n">options</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">execute_hook</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">hook</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
+<span class="byline author vcard">Posted by <span class="fn">naitnix</span></span>
 
-
-<p>下面来看一下这个azy_load_hooks用在什么地方，我们打开active_record/railtie.rb这个文件，我们会看见很多类似的代码:</p>
-
-<!-- more -->
+      
 
 
 
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">ActiveSupport</span><span class="o">.</span><span class="n">on_load</span><span class="p">(</span><span class="ss">:active_record</span><span class="p">)</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">filename</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">paths</span><span class="o">[</span><span class="s2">&quot;db&quot;</span><span class="o">].</span><span class="n">first</span><span class="p">,</span> <span class="s2">&quot;schema_cache.dump&quot;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">if</span> <span class="no">File</span><span class="o">.</span><span class="n">file?</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">cache</span> <span class="o">=</span> <span class="no">Marshal</span><span class="o">.</span><span class="n">load</span> <span class="no">File</span><span class="o">.</span><span class="n">binread</span> <span class="n">filename</span>
-</span><span class='line'>    <span class="k">if</span> <span class="n">cache</span><span class="o">.</span><span class="n">version</span> <span class="o">==</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Migrator</span><span class="o">.</span><span class="n">current_version</span>
-</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">schema_cache</span> <span class="o">=</span> <span class="n">cache</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>      <span class="nb">warn</span> <span class="s2">&quot;Ignoring db/schema_cache.dump because it has expired. The current schema version is </span><span class="si">#{</span><span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Migrator</span><span class="o">.</span><span class="n">current_version</span><span class="si">}</span><span class="s2">, but the one in the cache is </span><span class="si">#{</span><span class="n">cache</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">.&quot;</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
 
 
-<p>方法后的block是我们真正要做的额外的操作这些操作可能会延长我们的app的启动的过程，所以，我们在这里使用on_load将这些要执行的方法暂时存放在一个变量里，只有在程序需要的时候才去执行这些额外的操作，这样的话，我们的app启动的就会更快</p>
-
-<p>最后的执行是在active_record/base.rb文件中，代码的最下面执行到了run_load_hooks方法:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">ActiveSupport</span><span class="o">.</span><span class="n">run_load_hooks</span><span class="p">(</span><span class="ss">:active_record</span><span class="p">,</span> <span class="no">Base</span><span class="p">)</span> <span class="c1">#调用run_load_hooks，额外的操作开始执行。</span>
-</span></code></pre></td></tr></table></div></figure>
 
 
-<p>如果你打开rails其他的railtie的话，你会发现也有azy_load_blocks方法，他们起到的作用都是一样的，即，提高我们应用启动的速度</p>
-]]></content>
-  </entry>
   
-  <entry>
-    <title type="html"><![CDATA[Active_support_autoload]]></title>
-    <link href="http://gaoguoxin.github.io/blog/2014/02/25/active-support-autoload/"/>
-    <updated>2014-02-25T05:43:38+00:00</updated>
-    <id>http://gaoguoxin.github.io/blog/2014/02/25/active-support-autoload</id>
-    <content type="html"><![CDATA[<p>在看rails源码的时候发现很多地方用到了autoload，意识到这个autoload是整个框架的基础方法，于是有时间看了遍里面的代码，关键的方法都定义在autoload.rb(active_support/dependencies/autoload.rb)下面我们来看下这个文件里面都做了些什么事:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">extended</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">base</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
-</span><span class='line'>    <span class="vi">@_autoloads</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1">#hash 盛放该module需要一次性require的文件,每个元素的key为大写的module的名字，value为该module对应的文件(包含路径)</span>
-</span><span class='line'>    <span class="vi">@_under_path</span> <span class="o">=</span> <span class="kp">nil</span> <span class="c1">#字符串，代表需要load的某个模块的路径</span>
-</span><span class='line'>    <span class="vi">@_at_path</span> <span class="o">=</span> <span class="kp">nil</span>    <span class="c1">#字符串，代表需要load的某个模块的路径</span>
-</span><span class='line'>    <span class="vi">@_eager_autoload</span> <span class="o">=</span> <span class="kp">false</span> <span class="c1">#标识位</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
 
 
-<p>以上代码，很明显，给base(某个可能extend ActiveSupport::Autoload的模块)声明了几个实例变量。</p>
+<time datetime="2014-02-25T09:26:57+00:00" pubdate data-updated="true">02/25/2014</time>
+      
 
-<!--more-->
-
-
-<p>再来看看autoload方法,这个方法是我们在rails源码中看到最多的</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">autoload</span><span class="p">(</span><span class="n">const_name</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="vi">@_at_path</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">unless</span> <span class="n">path</span>
-</span><span class='line'>    <span class="n">full</span> <span class="o">=</span> <span class="o">[</span><span class="nb">name</span><span class="p">,</span> <span class="vi">@_under_path</span><span class="p">,</span> <span class="n">const_name</span><span class="o">.</span><span class="n">to_s</span><span class="o">].</span><span class="n">compact</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;::&quot;</span><span class="p">)</span><span class="c1">#生成一个用::隔开的字符串</span>
-</span><span class='line'>    <span class="n">path</span> <span class="o">=</span> <span class="no">Inflector</span><span class="o">.</span><span class="n">underscore</span><span class="p">(</span><span class="n">full</span><span class="p">)</span><span class="c1">#生成要加载模块的路径 例如:ActiveSupport #=&gt; active_support</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">if</span> <span class="vi">@_eager_autoload</span>
-</span><span class='line'>    <span class="vi">@_autoloads</span><span class="o">[</span><span class="n">const_name</span><span class="o">]</span> <span class="o">=</span> <span class="n">path</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">super</span> <span class="n">const_name</span><span class="p">,</span> <span class="n">path</span> <span class="c1">#调用ruby的autoload方法，这个方法是一个懒加载，即只有用到模块中的方法或者变量的时候，才会去require该文件</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>接下来的几个方法:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">autoload_under</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-</span><span class='line'>  <span class="vi">@_under_path</span><span class="p">,</span> <span class="n">old_path</span> <span class="o">=</span> <span class="n">path</span><span class="p">,</span> <span class="vi">@_under_path</span> <span class="c1">#设置了@_under_path变量</span>
-</span><span class='line'>  <span class="k">yield</span>
-</span><span class='line'><span class="k">ensure</span>
-</span><span class='line'>  <span class="vi">@_under_path</span> <span class="o">=</span> <span class="n">old_path</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">autoload_at</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-</span><span class='line'>  <span class="vi">@_at_path</span><span class="p">,</span> <span class="n">old_path</span> <span class="o">=</span> <span class="n">path</span><span class="p">,</span> <span class="vi">@_at_path</span><span class="c1">#设置了@_at_path变量</span>
-</span><span class='line'>  <span class="k">yield</span>
-</span><span class='line'><span class="k">ensure</span>
-</span><span class='line'>  <span class="vi">@_at_path</span> <span class="o">=</span> <span class="n">old_path</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">eager_autoload</span> <span class="c1">#这个方法用来一次性require所有所需的文件</span>
-</span><span class='line'>  <span class="n">old_eager</span><span class="p">,</span> <span class="vi">@_eager_autoload</span> <span class="o">=</span> <span class="vi">@_eager_autoload</span><span class="p">,</span> <span class="kp">true</span><span class="c1">#设置了@_eager_autoload变量为true</span>
-</span><span class='line'>  <span class="k">yield</span>
-</span><span class='line'><span class="k">ensure</span>
-</span><span class='line'>  <span class="vi">@_eager_autoload</span> <span class="o">=</span> <span class="n">old_eager</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>以上这三个方法都是后面跟着block的，所以这三个函数都yield了这个block，并且设置了base模块的几个基本的实例变量，这些block中的内容，如果你才看看rails源码的话，你会发现，基本上都是在里面调用了autoload方法:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">autoload_under</span> <span class="s2">&quot;renderer&quot;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Renderer</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:AbstractRenderer</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:PartialRenderer</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:TemplateRenderer</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:StreamingTemplateRenderer</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">autoload_at</span> <span class="s2">&quot;action_view/template/resolver&quot;</span> <span class="k">do</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Resolver</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:PathResolver</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:OptimizedFileSystemResolver</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:FallbackFileSystemResolver</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">eager_autoload</span> <span class="k">do</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Base</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Context</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:CompiledTemplates</span><span class="p">,</span> <span class="s2">&quot;action_view/context&quot;</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Digestor</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Helpers</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:LookupContext</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Layouts</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:PathSet</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:RecordIdentifier</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Rendering</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:RoutingUrlFor</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Template</span>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:ViewPaths</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这个时候我们回过头来在来看 autoload方法，里面有这么一句:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="vi">@_eager_autoload</span>
-</span><span class='line'>  <span class="vi">@_autoloads</span><span class="o">[</span><span class="n">const_name</span><span class="o">]</span> <span class="o">=</span> <span class="n">path</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>也就是说，只要我们调用了eager_autoload这个方法，我们就会设置@<em>eager_autoload值为true，并且我们还设置了@</em>autoloads这个hash，这个hash就是用来盛放我们将来需要一次性require的文件的路径</p>
-
-<p>再来看看最重要的一个方法:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">eager_load!</span>
-</span><span class='line'>  <span class="vi">@_autoloads</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span> <span class="nb">require</span> <span class="n">file</span> <span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这个方法是我们最终实现饥饿加载的最终代码所在，即一次性require我们所需的所有的module文件。</p>
-
-<p>这个autoload模块就是用来方便我们require我们所需要的module文件的,如果一个module extend了这个autoload模块的话，那么他就可以利用autoload这个方法来加载同一个module 名命名的文件加下的其他模块文件而不用制定文件的路径。还可以通过eager_autoload方法来指定这个module需要批量require 的module的名字，然后通过 eager_load!方法就可以实现一次性require多个文件，这个方法的好处是避免了我们在文件的开头写很多的require，如下面的例子所示:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">MyLib</span>
-</span><span class='line'>  <span class="kp">extend</span> <span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Autoload</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nb">autoload</span> <span class="ss">:Model</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">eager_autoload</span> <span class="k">do</span>
-</span><span class='line'>    <span class="nb">autoload</span> <span class="ss">:Cache</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">Then</span> <span class="n">your</span> <span class="n">library</span> <span class="n">can</span> <span class="n">be</span> <span class="n">eager</span> <span class="n">loaded</span> <span class="n">by</span> <span class="n">simply</span> <span class="ss">calling</span><span class="p">:</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">MyLib</span><span class="o">.</span><span class="n">eager_load!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-]]></content>
-  </entry>
+<span class="categories">
   
-  <entry>
-    <title type="html"><![CDATA[ActiveSupport::Concern Source Code Analyse]]></title>
-    <link href="http://gaoguoxin.github.io/blog/2014/02/21/hello-world/"/>
-    <updated>2014-02-21T02:44:45+00:00</updated>
-    <id>http://gaoguoxin.github.io/blog/2014/02/21/hello-world</id>
-    <content type="html"><![CDATA[<p>1、首先我们来看个例子</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">M</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">extend</span> <span class="no">ClassMethods</span>
-</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:include</span><span class="p">,</span> <span class="no">InstanceMethods</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">scope</span> <span class="ss">:disabled</span><span class="p">,</span> <span class="n">where</span><span class="p">(</span><span class="ss">:disabled</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">module</span> <span class="nn">ClassMethods</span>
-</span><span class='line'>    <span class="c1">#...</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">module</span> <span class="nn">InstanceMethods</span>
-</span><span class='line'>    <span class="c1">#...</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这是一个再普通不过的module了，当某个模块(或者类)include它以后，它让目标模块(或者类)去txtend  ClassMethods 这个模块，并去include  InstanceMethods 这个模块，这样的话，目标模块(或者类)在include M 的时候，这个目标模块(或者类)就拥有了ClassMethods这个模块中定义的方法并把这些方法当作类方法，并拥有了InstanceMethods模块的方法，并把这个模块中的方法作为自己的实例方法。如果你不觉得麻烦的话，那么这种方式是可选的或者，干脆直接定义实例方法，而不定义InstanceMethods，因为在include一个module的时候，module里面定义的方法自动就为实例方法。</p>
-
-<!-- more -->
-
-
-<p>2、再来看看另外一个例子</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">Foo</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
-</span><span class='line'>      <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">method_injected_by_foo</span>
-</span><span class='line'>        <span class="c1">#...对宿主做某些操作，例如增強功能等等</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">module</span> <span class="nn">Bar</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">method_injected_by_foo</span> <span class="c1">#这里调用了Foo这个module定义的method_injected_by_foo方法</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Host</span>
-</span><span class='line'>  <span class="kp">include</span> <span class="no">Foo</span>
-</span><span class='line'>  <span class="kp">include</span> <span class="no">Bar</span>
-</span><span class='line'>  <span class="c1">#要想让让Bar被include的时候执行Foo这个module中定义的method_injected_by_foo方法，必须在include  Bar之前先要解决依赖关系，即 include Foo</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>上面这个例子对于大多数的使用者来说，就会很麻烦，因为我在include某个模块的时候必须解决他们的依赖关系，要知道我include的模块依赖哪些其他模块，这个对使用者来说有点困难。为了解决这个依赖的问题，貌似我们可以这样做，即将依赖关系放到module内去解决,如下:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="k">module</span> <span class="nn">Foo</span>
-</span><span class='line'>   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
-</span><span class='line'>     <span class="n">base</span><span class="o">.</span><span class="n">class_eval</span> <span class="k">do</span>
-</span><span class='line'>       <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">method_injected_by_foo</span>
-</span><span class='line'>         <span class="c1">#...对宿主做某些操作，例如增強功能等等</span>
-</span><span class='line'>       <span class="k">end</span>
-</span><span class='line'>     <span class="k">end</span>
-</span><span class='line'>   <span class="k">end</span>
-</span><span class='line'> <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'> <span class="k">module</span> <span class="nn">Bar</span>
-</span><span class='line'>   <span class="kp">include</span> <span class="no">Foo</span> <span class="c1">#在这里解决依赖问题</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
-</span><span class='line'>     <span class="n">base</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:do_host_something</span><span class="p">)</span>
-</span><span class='line'>   <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'> <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'> <span class="k">class</span> <span class="nc">Host</span>
-</span><span class='line'>   <span class="kp">include</span> <span class="no">Bar</span> <span class="c1"># 这里只需要include一个Bar，而不用关心依赖问题</span>
-</span><span class='line'> <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>以上代码看似可以执行，但是问题是，在Foo被 Bar include的时候，对于Foo来说，此时的base为Bar，而不是 class Host，所以我们没法在Host include的时候，拿到Host中的do_host_something方法，因为它根本就不在Host中</p>
-
-<p>3、为了解决以上讨论的两个问题，ActiveSupport::Concern出现了，对于上面的问题，你只要这样操作就可以了:</p>
-
-<p>对于第一个问题，你可以这样解决:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;active_support/concern&#39;</span>
-</span><span class='line'><span class="k">module</span> <span class="nn">M</span>
-</span><span class='line'>  <span class="kp">extend</span> <span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Concern</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">included</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">scope</span> <span class="ss">:disabled</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="ss">disabled</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">module</span> <span class="nn">ClassMethods</span>
-</span><span class='line'>    <span class="c1">#...</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>对于第二个问题，你可以这样解决:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;active_support/concern&#39;</span>
-</span><span class='line'><span class="k">module</span> <span class="nn">Foo</span>
-</span><span class='line'>  <span class="kp">extend</span> <span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Concern</span>
-</span><span class='line'>  <span class="n">included</span> <span class="k">do</span>
-</span><span class='line'>    <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">method_injected_by_foo</span>
-</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">module</span> <span class="nn">Bar</span>
-</span><span class='line'>  <span class="kp">extend</span> <span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Concern</span>
-</span><span class='line'>  <span class="kp">include</span> <span class="no">Foo</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">included</span> <span class="k">do</span>
-</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">method_injected_by_foo</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">class</span> <span class="nc">Host</span>
-</span><span class='line'>  <span class="kp">include</span> <span class="no">Bar</span> <span class="c1"># 只include Bar就可以了，其他的我们不用关心</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>4、接下来，我们看看 active_support/concern 的源码是怎样来实现这些逻辑的</p>
-
-<p>a、首先定义了一个异常类:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">MultipleIncludedBlocks</span> <span class="o">&lt;</span> <span class="no">StandardError</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
-</span><span class='line'>    <span class="k">super</span> <span class="s2">&quot;Cannot define multiple &#39;included&#39; blocks for a Concern&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>b、模块被extend的时候，为base添加一个类实例变量，并赋值为空数组，这个类实例变量是用来记录base模块(或者类)的所有依赖模块的</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">extended</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">base</span><span class="o">.</span><span class="n">instance_variable_set</span><span class="p">(</span><span class="ss">:@_dependencies</span><span class="p">,</span> <span class="o">[]</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>c、重写了ruby的 append_features 方法，这个append_features 是ruby Module中的方法，愿意是当一个module(a)被include 到另一个module(b)的时候，就会调用module  a 中的这个append_features方法，并且把module b 做为参数传给append_features方法，然后将module a中的常量，方法，变量添加到module b 中。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">append_features</span><span class="p">(</span><span class="n">base</span><span class="p">)</span> <span class="c1">#此时的base代表module b</span>
-</span><span class='line'>  <span class="k">if</span> <span class="n">base</span><span class="o">.</span><span class="n">instance_variable_defined?</span><span class="p">(</span><span class="ss">:@_dependencies</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">instance_variable_get</span><span class="p">(</span><span class="ss">:@_dependencies</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="nb">self</span>  <span class="c1">#此时的self是module a </span>
-</span><span class='line'>    <span class="k">return</span> <span class="kp">false</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="k">return</span> <span class="kp">false</span> <span class="k">if</span> <span class="n">base</span> <span class="o">&lt;</span> <span class="nb">self</span>
-</span><span class='line'>    <span class="vi">@_dependencies</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">dep</span><span class="o">|</span> <span class="n">base</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="ss">:include</span><span class="p">,</span> <span class="n">dep</span><span class="p">)</span> <span class="p">}</span>  <span class="c1"># module b 去 循环include  modulea 的依赖 module</span>
-</span><span class='line'>    <span class="k">super</span>  <span class="c1"># 这个super 调用的是ruby原来的 append_features 方法</span>
-</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">extend</span> <span class="nb">const_get</span><span class="p">(</span><span class="ss">:ClassMethods</span><span class="p">)</span> <span class="k">if</span> <span class="nb">const_defined?</span><span class="p">(</span><span class="ss">:ClassMethods</span><span class="p">)</span> <span class="c1">#module b 去extend  module a 中定一的 ClassMethods 模块</span>
-</span><span class='line'>    <span class="n">base</span><span class="o">.</span><span class="n">class_eval</span><span class="p">(</span><span class="o">&amp;</span><span class="vi">@_included_block</span><span class="p">)</span> <span class="k">if</span> <span class="n">instance_variable_defined?</span><span class="p">(</span><span class="ss">:@_included_block</span><span class="p">)</span>  <span class="c1"># 为module b 动态添加一些内容(block中的内容)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>来看一下这个方法的具体逻辑，首先判断 module b 中是否已经有了类实例变量@<em>dependencies，如果有的话，那么将被include的module a 追加到这个变量中，如果一个module 中设置了 @</em>dependencies 这个变量 那么说明 该module 肯定extend 了active_support/concern，如果一个module中没有设置这个变量，可以肯定，该module 没有 extend  active_support/concern ，则该module是最后应用的那个module 。</p>
-
-<p>d、重新定义included 方法，included方法是ruby module中的方法，当一个module a 被另一个module b include的时候，module a 的included 方法就会执行，并把module 作为一个参数 base 传递给该方法，我们可以在这里对base做一些inject，这里对included方法进行了重写。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">included</span><span class="p">(</span><span class="n">base</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">if</span> <span class="n">base</span><span class="o">.</span><span class="n">nil?</span>
-</span><span class='line'>    <span class="k">raise</span> <span class="no">MultipleIncludedBlocks</span> <span class="k">if</span> <span class="n">instance_variable_defined?</span><span class="p">(</span><span class="ss">:@_included_block</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@_included_block</span> <span class="o">=</span> <span class="n">block</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="k">super</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>当module a 被module include 后，如果这个方法传递了一个base，那么就直接使用ruby module中的included方法，如果我们在include的时候，传递的是一个block，那么就将该block 转化为proc对象，并赋值给 @_included_block 变量，这个变量会在 上边的 append_features方法中使用，这个block一般是用来动态给base 添加一些方法活属性用。例如:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;active_support/concern&#39;</span>
-</span><span class='line'><span class="k">module</span> <span class="nn">M</span>
-</span><span class='line'>  <span class="kp">extend</span> <span class="ss">ActiveSupport</span><span class="p">:</span><span class="ss">:Concern</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">included</span> <span class="k">do</span>  <span class="c1">#这里调用included方法，我们只传递了一个block，并且这个block中用来声明一些方法，将来这些方法会成为base的类方法</span>
-</span><span class='line'>    <span class="n">scope</span> <span class="ss">:disabled</span><span class="p">,</span> <span class="o">-&gt;</span> <span class="p">{</span> <span class="n">where</span><span class="p">(</span><span class="ss">disabled</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">module</span> <span class="nn">ClassMethods</span>
-</span><span class='line'>    <span class="c1">#...</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-]]></content>
-  </entry>
+    <a class='category' href='/blog/categories/rails/'>Rails</a>
   
-</feed>
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/25/active-support-lazy-load-hooks/" title="Previous Post: active_support_lazy_load_hooks">&laquo; active_support_lazy_load_hooks</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+
+<section imagesd="comment">
+  <h1>Add a comment</h1>
+    <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+    <div class="ds-thread"></div>
+    <script type="text/javascript">
+      var duoshuoQuery = {short_name:"smarterhjw"};
+      (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = 'http://static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+      })();
+    </script>
+  </div>
+</section>
+
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+    <ul id="category-list"><li><a href='/blog/categories/rails/'>Rails (4)</a></li></ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/25/rails-initialize/">Rails_initialize</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/25/active-support-lazy-load-hooks/">Active_support_lazy_load_hooks</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/25/active-support-autoload/">Active_support_autoload</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/21/hello-world/">ActiveSupport::Concern Source Code Analyse</a>
+      </li>
+    
+  </ul>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - naitnix -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
