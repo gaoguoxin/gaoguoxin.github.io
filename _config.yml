@@ -92,11 +92,11 @@ default_asides: [custom/asides/category_list.html,asides/recent_posts.html]
 #delicious_count: 3
 
 # Disqus Comments
-# disqus_short_name:
-# disqus_show_comment_count: false
+# disqus_short_name: naitnix
+# disqus_show_comment_count: true
 
-duoshuo_show_comment_count: true
-duoshuo_short_name: naitnix
+# duoshuo_show_comment_count: true
+# duoshuo_short_name: naitnix
 
 # Google Analytics
 #google_analytics_tracking_id:
