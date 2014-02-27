@@ -1,0 +1,296 @@
+---
+layout: post
+title: "Rack"
+date: 2014-02-27 02:25:06 +0000
+comments: true
+categories: Rails
+---
+
+## Rack是什么
+> Dabbling in my own web framework experiments, I noticed that there is a lot of code duplication among frameworks since they essentially all do the same things. And still, every Ruby web framework developer is writing his own handlers for every webserver he wants to use. Hopefully, the framework users are satisfied with that choice.
+
+以上是rack作者Christian Neukirchen的一句话，意思是说，他在自己开发自己的ruby web framework的时候意识到了这个问题，即很多的ruby web 框架开发者在开发自己的框架的时候都在做很多重复性的工作，写很多的代码来实现一个处理器，以达到这些处理器能适应他们想要用到的每一个webserver，实际上他们写的这些处理器(handler)其实都是在做一件事就是处理http，即接受一个request并且返回一个response。
+
+rack的灵感来源于phyton社区的wsgi，目标是实现一个最小化的接口来链接web framework  和 web server。rack为用ruby开发的web框架提供了一个最小化的，模块化的，并且适应性强的的接口，它用最简单的方式包装了http request 和http response，它结合并提取了web server 和 ruby web framework 之间的api 到一个call 方法里。
+
+
+## Rack的最简单实现
+从上面的定义可以看出，rack是将http request 和httpresponse  提取到了一个call方法里面。这个call方法必须接受一个environment参数，这个参数格式应该是一个hash，并返回一个包含了status, headers  和 body 三部分的 一个数组，这个status 代表响应的状态，比如 200，404 500 等，headers是一个集合，包含比如说Content-Type在内的一些信息，body应该十一个字符串类型的数组。例如:
+
+``` ruby 
+
+class HelloWorld
+  def call(env)
+    [200, {"Content-Type" => "text/plain"}, ["Hello world!"]]
+  end
+end
+
+```
+
+可以看到 Rack 是一个应用(application),这个application 是一个object而不是一个class，这个application (object)可以响应call方法，这个call方法接受一个environment方法，并且返回一个包含status，headers和baody三个元素的数组。以上这个rack application  是我们自己手写的，我们没有依赖任何的gem，就是说，我们只要遵循rack的规范，我们就可以写出自己的rack 应用。
+
+
+此外，我们还有rack 这个gem，rack  gem 是一个很多高级的和共用的类的集合,能够为我们开发rack应用提供很多的便利，它包含了基本的request，response，cookie，session 的实现，还有很多有用的middleware
+
+## 总结
+*  Rack是一个能够运行你自己的ruby框架的框架
+*  Rack提供了一个接口，让你的ruby web framework 能够链接到各种不同的支持rack的 web server ，这些server 包括 passenger、Litespeed, Mongrel, Thin, Ebb, Webrick等。
+*  Rack gem 为你免费提供了 request，response，cookies，params,session等
+*  Rack允许你在一个application中使用多个不同的框架， [Rails and sinatra integration](http://m.onkey.org/2008/11/10/rails-meets-sinatra)是一个很好的例子。
+*  Rack提供了中间件(middleware),这个中间件就类似与rails的 前置/后置 过滤器，而且这个中间件可以在不同的rack application中重复使用
+
+
+## Other example
+``` ruby  another rack application
+
+require 'rubygems'
+require 'rack'
+
+class HelloWorld
+  def call(env)
+    [200, {"Content-Type" => "text/html"}, "Hello Rack!"]
+  end
+end
+
+Rack::Handler::Mongrel.run HelloWorld.new, :Port => 9292
+
+```
+
+上面的代码传递了一个 HelloWord类的实例 到 mongorel  Rack handler ，并且启动端口9292作为服务端口，这个HelloWorld的实例遵循了rack 的基本原则:
+*  能够相应call方法，并且这个call方法接受一个environment作为参数
+*  这个call方法返回了[http_status_code, response_headers_hash, body]格式的数组
+
+如果我们将上面代码最后一行简单的改写成这样:
+``` ruby 
+
+Rack::Handler::WEBrick.run(HelloRack.new, :Port => 9292)
+
+```
+
+向上面这样，我们就可以简单的将webserver 从mongrel 转换到了webrick。如果你这个时候打开浏览器，并访问localhost:9292,你就可以看到页面上输出 Hello Rack!的字样。
+
+我们知道，一个object必须要有call方法才有可能成为rack application，那么在ruby里面，一个proc 对象就有一个call方法，那么是不是可以使用proc对象来构造我们的rack application 呢?看一下下面这个实现:
+
+``` ruby
+
+require 'rubygems'
+require 'rack'
+
+Rack::Handler::Mongrel.run proc {|env| [200, {"Content-Type" => "text/html"}, "Hello Rack!"]}, :Port => 9292
+
+```
+
+看，向上面这个例子，我们使用了proc对象来创建我们的rack application 应用，如果我们访问我们的浏览器地址 localhost:9292,我们一样可以看到正常的输出。
+
+另外一个常用的模式还有:
+
+``` ruby 
+
+require 'rubygems'
+require 'rack'
+
+def application(env)
+  [200, {"Content-Type" => "text/html"}, "Hello Rack!"]
+end
+
+Rack::Handler::Mongrel.run method(:application), :Port => 9292
+
+```
+
+这种模式中，method方法的接收者是main，method方法会查找这个main对象的application方法，并执行这个方法。
+
+## Rackup
+
+rack 这个gem 为我们提供了很多有用的工具，能够让我们在开发rack应用的时候更轻松，rackup就是其中之一。在上面的例子中，我们直接使用了mongrel handler Rack::Handler::Mongrel  和 webrick handler Rack::Handler::Mongrel 而且是直接将端口号写了进去，如果我们使用rackup的话，这些事情将会变得非常简单和自然，但是我们必须提供一个叫做config.ru的文件。对于上面的例子，我们可以这样：
+
+``` ruby config.ru
+
+run Proc.new {|env| [200, {"Content-Type" => "text/html"}, "Hello Rack!"]}
+
+```
+
+然后，我们就可以在命令行直接输入 rackup  congig.ru  这样就能启动我们的rack application了，默认启用的端口是9292，但是我们可以通过 -p参数来改变启动的端口
+
+## Rack Builder
+
+在上面的例子中，我们使用了rackup，实际上当我们使用rackup启动我们的应用的时候，rackup把config文件转换成了Rackup::Builder的一个实例。
+### what's Rack::Builder
+Rack::Builder是一个能够将各种Rack middlewares 和application 整合到一起并转换为一个rack application的东西。
+
+### example
+比如说，我们的rack application 叫 infinity:
+``` ruby 
+infinity = Proc.new {|env| [200, {"Content-Type" => "text/html"}, env.inspect]}
+Rack::Handler::Mongrel.run infinity, :Port => 9292
+
+```
+
+如上代码所示，这个infinity所做的事就是将这个environment参数的所有内容返回到浏览器。
+
+你需要关注Rack::Builder的三个实例方法:
+
+*  Rack::Builder#run
+
+*  Rack::Builder#use
+
+*  Rack::Builder#map
+
+Rack::Builder#run 指定你要用Rack::Builder包装的rack application的应用，并转换这个Rack::application为Rack::Builder的实例：
+``` ruby 
+
+infinity = Proc.new {|env| [200, {"Content-Type" => "text/html"}, env.inspect]}
+builder = Rack::Builder.new
+builder.run infinity
+Rack::Handler::Mongrel.run builder, :Port => 9292
+
+```
+
+或者你也可以ruby社区的惯例方式:
+``` ruby 
+
+infinity = Proc.new {|env| [200, {"Content-Type" => "text/html"}, env.inspect]}
+builder = Rack::Builder.new do
+  run infinity
+end
+Rack::Handler::Mongrel.run builder, :Port => 9292
+
+```
+
+Rack::Builder#use 这个方法是用来添加一个middleware 到rack application 的，你可以把这个middleware当作是一个前置/后置 过滤器。 Rack gem  有许多有用的middleware，比如说，Rack::CommonLogger，这个middleware是用来帮助我们打印apache格式的日志的，如果我们想给我们的rack application 添加这个middleware的话，我们可以这样:
+``` ruby 
+
+infinity = Proc.new {|env| [200, {"Content-Type" => "text/html"}, env.inspect]}
+builder = Rack::Builder.new do
+  use Rack::CommonLogger
+  run infinity
+end
+Rack::Handler::Mongrel.run builder, :Port => 9292
+
+```
+
+Rack::Builder#map 通过这个方法，我们可以挂在很多的middleware到我们的rack application 中指定的某个url或者其子url中,比如说，你想让用户在访问/version(比如说 /version,/version/whatever，但是不是/versionsomething)，你想要做一些特殊的事情:
+
+``` ruby 
+
+infinity = Proc.new {|env| [200, {"Content-Type" => "text/html"}, env.inspect]}
+builder = Rack::Builder.new do
+  use Rack::CommonLogger
+
+  map '/' do
+    run infinity
+  end
+
+  map '/version' do
+    run Proc.new {|env| [200, {"Content-Type" => "text/html"}, "infinity 0.1"] }
+  end
+end
+Rack::Handler::Mongrel.run builder, :Port => 9292
+
+```
+
+现在，如果你访问localhost:9292的话，你会发现页面返回的是 env的信息，如果你访问的是localhost:9292/version的话，将会返回 infinity 0.1，如果你访问localhost:9292/versionsomething的话，仍然返回env的信息
+
+### nesting  maps
+如果你想给你的rack application 路由更多的选择的话，你可以使用以下这种方法:
+
+``` ruby 
+
+infinity = Proc.new {|env| [200, {"Content-Type" => "text/html"}, env.inspect]}
+builder = Rack::Builder.new do
+  use Rack::CommonLogger
+
+  map '/' do
+    run infinity
+  end
+
+  map '/version' do
+    map '/' do
+      run Proc.new {|env| [200, {"Content-Type" => "text/html"}, "infinity 0.1"] }
+    end
+
+    map '/last' do
+      run Proc.new {|env| [200, {"Content-Type" => "text/html"}, "infinity beta 0.0"] }
+    end
+  end
+end
+Rack::Handler::Mongrel.run builder, :Port => 9292
+
+```
+
+### write your own  middleware
+
+``` ruby  myrackmiddleware.rb
+
+class MyRackMiddleware
+  def initialize(appl)
+    @appl = appl
+  end
+  def call(env)
+    status, headers, body = @appl.call(env)
+    append_s = "... greetings from RubyLearning!!"
+    new_body = ""
+    body.each { |string| new_body << " " << string }
+    new_body << " " << append_s
+    [status, headers, [new_body]]
+  end
+end
+
+```
+
+``` ruby  my_app.rb
+
+class MyApp
+  def call(env)
+    [200, {"Content-Type" => "text/html"}, ["Hello Rack Participants from across the globe"]] 
+  end
+end
+
+```
+
+``` ruby  config.ru
+
+require './my_app'
+require './myrackmiddleware'
+use Rack::Reloader
+use MyRackMiddleware
+run MyApp.new
+
+```
+
+
+### another middle ware
+
+``` ruby  my_middleware.rb
+
+module MyMiddleware
+  class Hello
+    def initialize(app)
+      @app = app
+    end
+    def call(env)
+      if env['PATH_INFO'] == '/hello'
+        [200, {"Content-Type" => "text/plain"}, ["Hello from the middleware!"]]
+      else
+        # forward the request
+        @app.call(env)
+      end
+    end
+  end
+end
+
+
+```
+
+``` ruby config.ru
+
+require './my_middleware'
+use MyMiddleware::Hello # this comes in between
+run Proc.new{|env| [200, {"Content-Type" => "text/plain"}, ['Try accessing visiting /hello']] }
+
+```
+
+
+## 最后
+![rack image](/images/rack.jpeg)
+
+上图是rack的一张简易图，可一看出，rack包含了adapters 用来链接一系列的ruby web framework，还包含handlers 用来链接支持rack的webserver。在handlers和adapters中间是一系列的middleware。middleware的背后原理就是在request到达server之前对request做一些处理，在response返回到framework之前对response做一些处理。
